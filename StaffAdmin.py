@@ -3,8 +3,10 @@ from UniversityAdmin import UniversityAdmin
 
 
 class StaffAdmin(UniversityAdmin):
-    def __init__(self):
+    def __init__(self, database_obj):
         super().__init__()
+        self.database = database_obj
+        self.insert_into_database(self.staffs)
 
     def add_staff(self):
         staff = Staff()
@@ -83,3 +85,14 @@ class StaffAdmin(UniversityAdmin):
                     print(self.staff_table)
 
             choice = int(input(menu))
+
+    def insert_into_database(self, data_list):
+        create_table_query = "CREATE TABLE STAFF(ACCOUNT_ID INT NOT NULL PRIMARY KEY,FIRST_NAME VARCHAR(100),LAST_NAME VARCHAR(100),AGE INT NOT NULL,GENDER VARCHAR(100),PHONE_NUMBER LONG NOT NULL,EMAIL VARCHAR(100),JOB VARCHAR(200),PAY INT NOT NUlL, HOURS INT NOT NULL)"
+
+        self.database.create_table("STAFF", create_table_query)
+
+        for staff in self.staffs:
+            insert_query = "INSERT INTO STAFF VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+            row = (int(staff.get_account_id()), staff.first_name, staff.last_name, int(staff.age), staff.gender, int(staff.get_phone_number()), staff.get_email(), str(staff.job), str(staff.pay), int(staff.hours))
+            self.database.insert_data(insert_query, row)
+            self.database.connection.commit()

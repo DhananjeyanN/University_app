@@ -6,29 +6,31 @@ import csv
 from prettytable import PrettyTable
 
 
-class UniversityAdmin:
+class UniversityAdmin:  # Parent class of student admin, teacher admin, and staff admin
     def __init__(self):
-        self.admins = []
-        self.students = []
-        self.teachers = []
-        self.staffs = []
+        self.admins = []  # creates list to store admins
+        self.students = []  # creates list to store students
+        self.teachers = []  # creates list to store teachers
+        self.staffs = []  # creates list to store staff
         self.users = []
         self.student_table = PrettyTable()
         self.teacher_table = PrettyTable()
         self.staff_table = PrettyTable()
-        self.data = {"student" : "student_data.csv", "teacher": "teacher_data.csv", "staff": "staff_data.csv"}
+        self.data = {"student": "student_data.csv", "teacher": "teacher_data.csv",
+                     "staff": "staff_data.csv"}  # dictionary used in read file, the given input for filename is used to pull the right key from dictionary
         self.load_file("student")
         self.load_file("teacher")
         self.load_file("staff")
-    def read_file(self, filename):
-        with open(self.data[filename], "r") as file:
-            data_list =list(csv.reader(file))[1:]
+
+    def read_file(self, filename):  # takes filename to access keys in in self.data
+        with open(self.data[filename], "r") as file:  # filename is used to read the right file
+            data_list = list(csv.reader(file))[1:]
             return data_list
 
-    def load_file(self, account_type):
-        data = self.read_file(account_type)
-        if account_type == "student":
-            for row in data:
+    def load_file(self, account_type):  # loads file from saved data
+        data = self.read_file(account_type)  # read_file used and account type passed in
+        if account_type == "student":  # if used to read data depending on student, teacher, or staff
+            for row in data:  # goes through every line in data, the lines are stored in lists
                 student = Student()
                 student.set_account_id(row[0])
                 student.first_name = row[1]
@@ -73,20 +75,22 @@ class UniversityAdmin:
     def write_file(self, account_type):
         if account_type == "student":
             data = self.students
-            fields = ["Account_ID", "First_Name", "last Name", "Age", "Gender", "Phone_Number", "Email", "Majors", "Classes", "Year"]
+            fields = ["Account_ID", "First_Name", "last Name", "Age", "Gender", "Phone_Number", "Email", "Majors",
+                      "Classes", "Year"]
             with open(self.data["student"], "w") as file:
                 csvwriter = csv.writer(file)
                 csvwriter.writerow(fields)
 
                 for student in self.students:
-                    csvwriter.writerow([student.get_account_id(), student.first_name, student.last_name, student.age, student.gender,
+                    csvwriter.writerow(
+                        [student.get_account_id(), student.first_name, student.last_name, student.age, student.gender,
                          student.get_phone_number(), student.get_email(), student.majors, student.classes,
                          student.year])
         elif account_type == "teacher":
 
             data = self.teachers
             fields = ["Account ID", "First Name", "last Name", "Age", "Gender", "Phone Number", "Email",
-                                     "Class's", "Pay", "Hours"]
+                      "Class's", "Pay", "Hours"]
             with open(self.data["teacher"], "w") as file:
                 csvwriter = csv.writer(file)
                 csvwriter.writerow(fields)
@@ -94,22 +98,17 @@ class UniversityAdmin:
 
                 for teacher in self.teachers:
                     row = [teacher.get_account_id(), teacher.first_name, teacher.last_name, teacher.age, teacher.gender,
-                         teacher.get_phone_number(), teacher.get_email(), teacher.classes, teacher.pay, teacher.hours]
+                           teacher.get_phone_number(), teacher.get_email(), teacher.classes, teacher.pay, teacher.hours]
                     csvwriter.writerow(row)
         elif account_type == "staff":
             data = self.staffs
             fields = ["Account ID", "First Name", "last Name", "Age", "Gender", "Phone Number", "Email",
-                                     "Job's", "Pay", "Hours"]
+                      "Job's", "Pay", "Hours"]
             with open(self.data["staff"], "w") as file:
                 csvwriter = csv.writer(file)
                 csvwriter.writerow(fields)
 
                 for staff in self.staffs:
-                    csvwriter.writerow([staff.get_account_id(), staff.first_name, staff.last_name, staff.age, staff.gender,
-                                   staff.get_phone_number(), staff.get_email(), staff.job, staff.pay, staff.hours])
-
-
-
-
-
-
+                    csvwriter.writerow(
+                        [staff.get_account_id(), staff.first_name, staff.last_name, staff.age, staff.gender,
+                         staff.get_phone_number(), staff.get_email(), staff.job, staff.pay, staff.hours])

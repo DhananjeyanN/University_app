@@ -1,8 +1,10 @@
 from AccountMaster import AccountMaster
+from UniversityAdmin import UniversityAdmin
 
 
-class LoginManagement:
+class LoginManagement(UniversityAdmin):
     def __init__(self, admin, DB):
+        super().__init__()
         self.DB = DB
         self.admin = admin
         self.load_admin()
@@ -84,13 +86,11 @@ class LoginManagement:
         self.insert_into_database()
 
     def insert_into_database(self):
-        create_table_query = "CREATE TABLE ACCCOUNTMASTER(ACCOUNT_ID INT NOT NULL PRIMARY KEY,FIRST_NAME VARCHAR(100),LAST_NAME VARCHAR(100),AGE INT NOT NULL,GENDER VARCHAR(100),PHONE_NUMBER LONG NOT NULL,EMAIL VARCHAR(100),PASSWORD VARCHAR(100))"
-
-        self.DB.create_table("ACCOUNTMASTER", create_table_query)
-        self.DB.connection.close()
-        self.DB.connect()
         insert_query = "INSERT INTO ACCOUNTMASTER VALUES(%s,%s,%s,%s,%s,%s,%s,%s)"
         row = (int(self.admin.get_account_id()), self.admin.first_name, self.admin.last_name, int(self.admin.age), self.admin.gender, int(self.admin.get_phone_number()), self.admin.get_email(), self.admin.get_password())
         self.DB.insert_data(insert_query, row)
         self.DB.connection.commit()
+
+    def load_datafiles(self):
+        self.load_file_database("ADMIN")
 

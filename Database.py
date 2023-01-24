@@ -29,14 +29,13 @@ class DatabaseConfig():
         self.database_name = database_name
 
     def create_table(self, table_name, query):
-        self.cursor.execute(f"USE {self.database_name}")
+        self.use_database()
         self.cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
         self.cursor.execute(query)
         print(f"{table_name} created successfully")
 
     def insert_data(self, query, row):
-        self.cursor.execute(f"USE {self.database_name}")
-        print(self.database_name, query, row)
+        self.use_database()
         self.cursor.execute(query, row)
         self.connection.commit()
 
@@ -46,6 +45,24 @@ class DatabaseConfig():
 
     def drop_table(self):
         pass
+
+    def use_database(self):
+        self.cursor.execute(f"USE {self.database_name}")
+
+    def fetch_data(self, table_name):
+        self.use_database()
+        fetch_query = f"SELECT * FROM {table_name}"
+        self.cursor.execute(fetch_query)
+        data = self.cursor.fetchall()
+        return data
+
+    def create_tables(self,query_list, table_names):
+        query_table = zip(query_list,table_names)
+        for query, table_name in query_table:
+            self.create_table(table_name, query)
+
+
+
 
 #db_object = DatabaseConfig()
 #db_object.connect()

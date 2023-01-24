@@ -3,9 +3,10 @@ from UniversityAdmin import UniversityAdmin
 
 
 class TeacherAdmin(UniversityAdmin):
-    def __init__(self, database_obj):
+    def __init__(self, DB):
         super().__init__()
-        self.database = database_obj
+        self.DB = DB
+
         self.insert_into_database(self.teachers)
 
     def add_teacher(self):
@@ -88,12 +89,11 @@ class TeacherAdmin(UniversityAdmin):
             choice = int(input(menu))
 
     def insert_into_database(self, data_list):
-        create_table_query = "CREATE TABLE TEACHER(ACCOUNT_ID INT NOT NULL PRIMARY KEY,FIRST_NAME VARCHAR(100),LAST_NAME VARCHAR(100),AGE INT NOT NULL,GENDER VARCHAR(100),PHONE_NUMBER LONG NOT NULL,EMAIL VARCHAR(100),CLASSES VARCHAR(200),PAY INT NOT NUlL, HOURS INT NOT NULL)"
-
-        self.database.create_table("TEACHER", create_table_query)
-
         for teacher in self.teachers:
             insert_query = "INSERT INTO TEACHER VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
             row = (int(teacher.get_account_id()), teacher.first_name, teacher.last_name, int(teacher.age), teacher.gender, int(teacher.get_phone_number()), teacher.get_email(), str(teacher.classes), str(teacher.pay), int(teacher.hours))
-            self.database.insert_data(insert_query, row)
-            self.database.connection.commit()
+            self.DB.insert_data(insert_query, row)
+            self.DB.connection.commit()
+
+    def load_datafiles(self):
+        self.load_file_database("teacher")

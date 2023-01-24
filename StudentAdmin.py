@@ -3,9 +3,9 @@ from UniversityAdmin import UniversityAdmin
 
 
 class StudentAdmin(UniversityAdmin): # creating class Student Admin as a child class of University Admin
-    def __init__(self, database_obj):
+    def __init__(self, DB):
         super().__init__() # bringing in init of Student Admin in the init of Student Admin
-        self.database = database_obj
+        self.DB = DB
         self.insert_into_database(self.students)
 
     def add_student(self):
@@ -91,12 +91,11 @@ class StudentAdmin(UniversityAdmin): # creating class Student Admin as a child c
             choice = int(input(menu))
 
     def insert_into_database(self, data_list):
-        create_table_query = "CREATE TABLE STUDENT(ACCOUNT_ID INT NOT NULL PRIMARY KEY,FIRST_NAME VARCHAR(100),LAST_NAME VARCHAR(100),AGE INT NOT NULL,GENDER VARCHAR(100),PHONE_NUMBER LONG NOT NULL,EMAIL VARCHAR(100),MAJORS VARCHAR(200),CLASSES VARCHAR(200),YEAR INT NOT NUlL)"
-
-        self.database.create_table("STUDENT", create_table_query)
-
         for student in self.students:
             insert_query = "INSERT INTO STUDENT VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
             row = (int(student.get_account_id()), student.first_name, student.last_name, int(student.age), student.gender, int(student.get_phone_number()), student.get_email(), str(student.majors), str(student.classes), int(student.year))
-            self.database.insert_data(insert_query, row)
-            self.database.connection.commit()
+            self.DB.insert_data(insert_query, row)
+            self.DB.connection.commit()
+
+    def load_datafiles(self):
+        self.load_file_database("student")

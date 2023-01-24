@@ -7,16 +7,16 @@ from TeacherAdmin import TeacherAdmin
 
 
 class MainAdmin:
-    def __init__(self):
-        self.DB = DatabaseConfig()
-        self.DB.connect()
-        self.DB.create_database("UNIVERSITY_DATABASE")
+    def __init__(self, DB):
+        self.DB = DB
         self.student = StudentAdmin(self.DB) # instantiating self.student from StudentAdmin()
         self.teacher = TeacherAdmin(self.DB) # instantiating self.teacher from TeacherAdmin()
         self.staff = StaffAdmin(self.DB) # instantiating self.staff from StaffAdmin()
         self.admin = None
         self.exit = False
-
+        self.student.load_datafiles()
+        self.teacher.load_datafiles()
+        self.staff.load_datafiles()
 
     def login_dashboard(self): # sent here if admin has not logged in yet
         login_manager = LoginManagement(self.admin, self.DB) # instantiating login_manager from LoginManagement()

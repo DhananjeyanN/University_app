@@ -1,6 +1,6 @@
 from AccountMaster import AccountMaster
 from Database import DatabaseConfig
-from Login_Manager import LoginManagement
+from Login_Manager import AccountMasterAdmin
 from StaffAdmin import StaffAdmin
 from StudentAdmin import StudentAdmin
 from TeacherAdmin import TeacherAdmin
@@ -12,16 +12,15 @@ class MainAdmin:
         self.student = StudentAdmin(self.DB) # instantiating self.student from StudentAdmin()
         self.teacher = TeacherAdmin(self.DB) # instantiating self.teacher from TeacherAdmin()
         self.staff = StaffAdmin(self.DB) # instantiating self.staff from StaffAdmin()
-        self.admin = None
+        self.login_mananger = AccountMasterAdmin(self.DB)
+        self.admin = self.login_mananger.admin
         self.exit = False
         self.student.load_datafiles()
         self.teacher.load_datafiles()
         self.staff.load_datafiles()
-
     def login_dashboard(self): # sent here if admin has not logged in yet
-        login_manager = LoginManagement(self.admin, self.DB) # instantiating login_manager from LoginManagement()
-        login_manager.login()
-        self.exit = login_manager.exit
+        self.login_mananger.login()
+        self.exit = self.admin.exit
 
     def dashboard(self): # sent here when admin is logged in
         menu = """

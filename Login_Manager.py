@@ -2,34 +2,59 @@ from AccountMaster import AccountMaster
 from UniversityAdmin import UniversityAdmin
 
 
-class LoginManagement(UniversityAdmin):
-    def __init__(self, admin, DB):
+class AccountMasterAdmin(UniversityAdmin):
+    def __init__(self, DB):
         super().__init__()
+        self.admin = None
         self.DB = DB
-        self.admin = admin
         self.load_admin()
-        self.exit = False
-    def load_admin(self): # reading admin data from account.csv
-        with open("account.csv", "r") as account:
-            data = account.readlines()
-            if len(data) != 0:
+        if self.admin is not None:
 
-                values = []
-                for row in data:
-                    field = row.split(":")[1][:-1]
-                    values.append(field)
+            self.insert_into_database()
+        else:
+            self.register()
+        self.exit = False
+    def load_admin(self):
+        data = self.DB.fetch_data("ACCOUNTMASTER")
+        print(data, "admin_data", self.DB.database_name)
+        if len(data) != 0:
+            for row in data:
                 self.admin = AccountMaster()
-                self.admin.first_name = values[0]
-                self.admin.last_name = values[1]
-                self.admin.age = values[2]
-                self.admin.gender = values[3]
-                self.admin.set_phone_number(values[4])
-                self.admin.set_email(values[5])
-                self.admin.password = values[6]
+                self.admin.set_account_id(row[0])
+                self.admin.first_name = row[1]
+                self.admin.last_name = row[2]
+                self.admin.age = row[3]
+                self.admin.gender = row[4]
+                self.admin.set_phone_number(row[5])
+                self.admin.set_email(row[6])
                 self.admin.is_logged_in = False
-                print(self.admin)
-            else:
-                self.register()
+                self.admin.set_password(row[7])
+                self.admins.append(self.admin)
+                print(self.admin.get_email(), self.admin.get_password())
+        else:
+            print("admin does not exist")
+
+    # def load_admin(self): # reading admin data from account.csv
+    #     with open("account.csv", "r") as account:
+    #         data = account.readlines()
+    #         if len(data) != 0:
+    #
+    #             values = []
+    #             for row in data:
+    #                 field = row.split(":")[1][:-1]
+    #                 values.append(field)
+    #             self.admin = AccountMaster()
+    #             self.admin.first_name = values[0]
+    #             self.admin.last_name = values[1]
+    #             self.admin.age = values[2]
+    #             self.admin.gender = values[3]
+    #             self.admin.set_phone_number(values[4])
+    #             self.admin.set_email(values[5])
+    #             self.admin.password = values[6]
+    #             self.admin.is_logged_in = False
+    #             print(self.admin)
+    #         else:
+    #             self.register()
     def login(self): # when admin has logged in this is called so an admin can be created, login, or program can be quit
         menu = """
         Welcome to the University 
@@ -43,11 +68,12 @@ class LoginManagement(UniversityAdmin):
         if choice == "1":
             email = input("Enter email: ")
             password = input("Enter Password: ")
-
+            print(self.admin.get_email())
+            print(self.admin.get_password())
             if self.admin is not None:
-                if self.admin.get_email().strip() == email and self.admin.password.strip() == password:
+                if self.admin.get_email().strip() == email and self.admin.get_password().strip() == password:
                     print(self.admin.get_email())
-                    print(self.admin.password)
+                    print(self.admin.get_password())
                     self.admin.is_logged_in = True
                 else:
                     print("Incorrect Password")

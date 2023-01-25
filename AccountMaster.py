@@ -7,6 +7,7 @@ from Account import Account
 class AccountMaster(Account):
     def __init__(self):
         super().__init__()
+        self.is_logged_in = False
         self.__password = None
 
     def set_password(self):

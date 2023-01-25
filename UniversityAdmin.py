@@ -1,3 +1,4 @@
+from AccountMaster import AccountMaster
 from Database import DatabaseConfig
 from Student import Student
 from Teacher import Teacher
@@ -163,6 +164,17 @@ class UniversityAdmin:  # Parent class of student admin, teacher admin, and staf
                 staff.hours = row[9]
                 self.staffs.append(staff)
         elif account_type == "ADMIN":
-
+            data = self.DB.fetch_data("ACCOUNTMASTER")
+            for row in data:
+                admin = AccountMaster()
+                admin.set_account_id(row[0])
+                admin.first_name = row[1]
+                admin.last_name = row[2]
+                admin.age = row[3]
+                admin.gender = row[4]
+                admin.set_phone_number(row[5])
+                admin.set_email(row[6])
+                admin.set_password(row[7])
+                self.admins.append(admin)
 
 

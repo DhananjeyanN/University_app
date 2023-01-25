@@ -64,16 +64,18 @@ class DatabaseConfig():
 
 
 
-#db_object = DatabaseConfig()
-#db_object.connect()
-#db_object.create_database("testing")
-#query = "CREATE TABLE STUDENT(STUDENT_ID INT NOT NULL PRIMARY KEY, NAME VARCHAR(100), DOB DATE NOT NULL, HEIGHT DECIMAL(4,2))"
-#db_object.create_table("Student", query)
-#insert_data_queries = ["INSERT INTO STUDENT VALUES(1,'Potato', '2001-12-05', 2.1)","INSERT INTO STUDENT VALUES(2,'Carrot', '2002-12-06', 2.2)" ]
-#db_object.insert_data(insert_data_queries)
-#db_object.connection.close()
+# db_object = DatabaseConfig()
+# db_object.connect()
+# db_object.create_database("testing")
+# query = "CREATE TABLE STUDENT(STUDENT_ID INT NOT NULL PRIMARY KEY, NAME VARCHAR(100), DOB DATE NOT NULL, HEIGHT DECIMAL(4,2))"
+# db_object.create_table("Student", query)
+# insert_data_queries = ["INSERT INTO STUDENT VALUES(1,'Potato', '2001-12-05', 2.1)","INSERT INTO STUDENT VALUES(2,'Carrot', '2002-12-06', 2.2)" ]
+# db_object.insert_data(insert_data_queries[1])
+# print(db_object.fetch_data("Student"), "Fetch")
+# db_object.connection.close()
 
 # obj = DatabaseConfig()
 # obj.connect("testing")
 # insert_data_queries = ['INSERT INTO STUDENT VALUES(4,"Strawberry", "2012-06-09", 4.5), (5,"Strawberry", "2012-06-09", 4.5)']
 # obj.insert_data(insert_data_queries)
+

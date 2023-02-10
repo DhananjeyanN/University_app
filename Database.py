@@ -17,7 +17,8 @@ class DatabaseConfig():
         self.account_num = 0
 
     def connect(self):
-        self.connection = mysql.connector.connect(host=self.host, user=self.user, password=self.password, port=self.port)
+        self.connection = mysql.connector.connect(host=self.host, user=self.user, password=self.password,
+                                                  port=self.port)
         self.cursor = self.connection.cursor()
         print(f"Connected Successfully")
 
@@ -39,12 +40,11 @@ class DatabaseConfig():
         self.cursor.execute(query, row)
         self.connection.commit()
 
+    def drop_database(self):
+        self.cursor.execute(f"DROP DATABASE IF EXISTS {self.database_name}")
 
-    def drop_data(self):
-        pass
-
-    def drop_table(self):
-        pass
+    def drop_table(self, table_name):
+        self.cursor.execute(f"DROP TABLE {table_name}")
 
     def use_database(self):
         self.cursor.execute(f"USE {self.database_name}")
@@ -56,13 +56,10 @@ class DatabaseConfig():
         data = self.cursor.fetchall()
         return data
 
-    def create_tables(self,query_list, table_names):
-        query_table = zip(query_list,table_names)
+    def create_tables(self, query_list, table_names):
+        query_table = zip(query_list, table_names)
         for query, table_name in query_table:
             self.create_table(table_name, query)
-
-
-
 
 # db_object = DatabaseConfig()
 # db_object.connect()
@@ -78,4 +75,3 @@ class DatabaseConfig():
 # obj.connect("testing")
 # insert_data_queries = ['INSERT INTO STUDENT VALUES(4,"Strawberry", "2012-06-09", 4.5), (5,"Strawberry", "2012-06-09", 4.5)']
 # obj.insert_data(insert_data_queries)
-
